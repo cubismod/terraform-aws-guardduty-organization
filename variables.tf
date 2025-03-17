@@ -28,6 +28,18 @@ variable "enable_eks_runtime_monitoring" {
   description = "(Optional) If true, enables EKS GuardDuty Add-on for EKS protection. Defaults to `true`."
 }
 
+variable "enable_runtime_monitoring" {
+  type        = bool
+  default     = false
+  description = "(Optional) If true, enables GuardDuty Add-on for runtime EC2 monitoring. Defaults to `false`. Note that only one option of `enable_runtime_monitoring` or `enable_eks_runtime_monitoring` can be enabled at once as runtime monitoring includes EKS."
+}
+
+variable "runtime_monitoring_enabled_configs" {
+  type        = list(string)
+  default     = ["EC2_AGENT_MANAGEMENT"]
+  description = "(Optional) If runtime monitoring is enabled, then this will enable specific organization configuration features. Defaults to `EC2_AGENT_MANAGEMENT`. Valid options include `EKS_ADDON_MANAGEMENT`, `ECS_FARGATE_AGENT_MANAGEMENT`, `EC2_AGENT_MANAGEMENT`"
+}
+
 variable "scan_rds_login_events" {
   type        = bool
   default     = true

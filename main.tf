@@ -60,6 +60,21 @@ resource "aws_guardduty_organization_configuration_feature" "eks_runtime_monitor
   }
 }
 
+resource "aws_guardduty_organization_configuration_feature" "runtime_monitoring" {
+  count       = var.enable_runtime_monitoring ? 1 : 0
+  detector_id = aws_guardduty_detector.default.id
+  name        = "RUNTIME_MONITORING"
+  auto_enable = var.auto_enable_organization_members
+
+  dynamic "additional_configuration" {
+    for_each = var.runtime_monitoring_enabled_configs
+    content {
+      name        = additional_configuration.value
+      auto_enable = var.auto_enable_organization_members
+    }
+  }
+}
+
 resource "aws_guardduty_organization_configuration_feature" "eks_audit_logs" {
   count = var.scan_eks_audit_logs ? 1 : 0
 
